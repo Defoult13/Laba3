@@ -12,7 +12,7 @@ void menu() {
 	cout << "2 - Удалить персонажа из списка по указанному индексу" << endl;
 	cout << "3 - Показать список персонажей" << endl;
 	cout << "4 - Найти наиболее сильного персонажа" << endl;
-	cout << "5 - " << endl;
+	cout << "5 - Начать замес" << endl;
 	cout << "6 - Выйти из игры" << endl;
 	cout << "> ";
 }
@@ -24,6 +24,8 @@ int main() {
 	Character item = Character();
 	int input = 0;
 	int idx;
+	int c1;
+	int c2;
 	while (input != 6) {
 		menu();
 		cin >> input;
@@ -53,16 +55,17 @@ int main() {
 			idx = CL.index_of_maxdam();
 			cout << "Индекс наиболее сильного персонажа: " << idx << endl;
 			break;
-			/*
+			
 		case 5:
 			system("cls");
 			CL.show_all();
-			cout << "Ââåäèòå èíäåêñ: ";
-			cin >> idx;
-			CL[idx]->compute_salary();
-			cout << "Çàðàáîòíàÿ ïëàòà: " << EL[idx]->compute_salary() << endl;
-			break;
-			*/
+			cout << "Введите индекс первого персонажа" << endl;
+			cin >> c1;
+			cout << "Введите индекс второго персонажа" << endl;
+			cin >> c2;
+			Character* ch1 = CL[c1];
+			Character* ch2 = CL[c2];
+			CL.Fight(*ch1, *ch2);
 		}
 		
 		if (input != 6)

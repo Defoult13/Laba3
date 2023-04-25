@@ -67,6 +67,7 @@ using namespace std;
 		void show_all();
 		void Swap(CharacterList& other) noexcept;
 		int index_of_maxdam();
+		void Fight(Character& attacker, Character& defender);
 
 		int get_size();
 		void set_size(size_t size);

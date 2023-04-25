@@ -45,12 +45,12 @@ TEST(CharacterTests, UseAbility) {
 	p2.use_ability();
 	p3.use_ability();
 	// Assert
-	EXPECT_EQ(p1.get_armor(), 60);
-	EXPECT_EQ(p1.get_damage(), 10);
+	EXPECT_EQ(p1.get_armor(), 31);
+	EXPECT_EQ(p1.get_damage(), 19);
 	EXPECT_TRUE(p2.get_is_ability_used());
-	EXPECT_EQ(p3.get_damage(), 40);
-	EXPECT_EQ(p3.get_triple_hit_chance(), 60);
-	EXPECT_EQ(p3.get_armor(), 10);
+	EXPECT_EQ(p3.get_damage(), 22);
+	EXPECT_EQ(p3.get_triple_hit_chance(), 32);
+	EXPECT_EQ(p3.get_armor(), 19);
 
 }
 

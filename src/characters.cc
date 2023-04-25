@@ -264,16 +264,16 @@ void Character::use_ability()
 	switch (type)
 	{
 	case KNIGHT:
-		set_armor(armor * 2);
-		set_damage(damage / 2);
+		set_armor(armor + 1);
+		set_damage(damage - 1);
 		break;
 	case ASSASSIN:
 		set_is_ability_used(true);
 		break;
 	case BERSERK:
-		set_damage(damage * 2);
-		set_triple_hit_chance(triple_hit_chance * 2);
-		set_armor(armor / 2);
+		set_damage(damage + 2);
+		set_triple_hit_chance(triple_hit_chance + 2);
+		set_armor(armor - 1);
 		break;
 	default:
 		break;
@@ -357,4 +357,71 @@ void CharacterList::show_all() {
 		print_current(i);
 		cout << endl;
 	}
+}
+
+void CharacterList::Fight(Character& attacker, Character& defender) {
+	while (attacker.get_hp() > 0 && defender.get_hp() > 0){
+		int action = rand() % 2;
+		int turn = rand() % 2;
+		if (turn == 0) {
+			if (action == 0) {
+				if (defender.get_is_ability_used()) {
+					cout << "Персонаж 2 увернулся от атаки" << endl;
+					system("pause");
+				}
+				defender.take_damage(attacker.deal_damage());
+				cout << "Персонаж 2 получил урон!" << endl;
+				cout << "Здоровье персонажа 2: " << defender.get_hp() << endl;
+				system("pause");
+			}
+			else {
+
+				attacker.use_ability();
+				if (attacker.get_type() == KNIGHT) {
+					cout << "Увеличена броня ценой урона" << endl;
+					system("pause");
+				}
+				else if (attacker.get_type() == BERSERK) {
+					cout << "Увеличен урон и шанс крита,ценой брони" << endl;
+					system("pause");
+				}
+				else {
+					cout << "Уворот от следующей атаки" << endl;
+					system("pause");
+				}
+			}
+		}
+		else if (turn == 1) {
+			 
+			if (action == 0) {
+				if (attacker.get_is_ability_used()) {
+					cout << "Персонаж 1 увернулся от атаки" << endl;
+					system("pause");
+				}
+				attacker.take_damage(defender.deal_damage());
+				cout << "Персонаж 1 получил урон!" << endl;
+				cout << "Здоровье персонажа 1: " << attacker.get_hp() << endl;
+				system("pause");
+			}
+			else {
+
+				defender.use_ability();
+				if (defender.get_type() == KNIGHT) {
+					cout << "Увеличена броня ценой урона" << endl;
+					system("pause");
+				}
+				else if (defender.get_type() == BERSERK) {
+					cout << "Увеличен урон и шанс крита,ценой брони" << endl;
+					system("pause");
+				}
+				else {
+					cout << "Уворот от следующей атаки" << endl;
+					system("pause");
+				}
+			}
+		}
+	}
+	if (defender.get_hp() <= 0) cout << "Персонаж 1 победил" << endl;
+	else if (attacker.get_hp() <= 0) cout << "Персонаж 2 победил" << endl;
+	system("pause");
 }
