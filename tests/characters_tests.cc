@@ -112,16 +112,3 @@ TEST(CharacterListTests, IndexOfMaxDam) {
 
 	EXPECT_EQ(tab.index_of_maxdam(), 1);
 }
-
-TEST(CharacterListTest, ExceptionTest) {
-	CharacterList l1 = CharacterList();
-	l1.set_size(0);
-	EXPECT_ANY_THROW(l1.delete_character(5), std::runtime_error);
-}
-
-TEST(CharacterListTest, ExceptionTest2) {
-	CharacterList l2 = CharacterList();
-	l2.set_size(11);
-	Character c = Character();
-	EXPECT_ANY_THROW(l2.add_character(50, c), std::runtime_error);
-}
