@@ -31,4 +31,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(characters_tests "tests/characters_tests.cc")
 target_link_libraries(characters_tests charactersv1 GTest::gtest_main)
 
+add_executable(console  "src/console.cpp")
+target_link_libraries(console charactersv1)
+
 
