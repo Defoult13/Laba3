@@ -3,9 +3,10 @@
 #include <cstdlib>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
-using namespace warriors;
+
 
 const float double_hit_chance = 50;
 const float reduce_damage_chance = 40;
@@ -23,6 +24,172 @@ Character::Character() {
 	health = 100;
 	armor = 30;
 	damage = 50;
+}
+
+Character::Character(const Character& character) {
+	this->type = character.type;
+	this->health = character.health;
+	this->armor = character.armor;
+	this->damage = character.damage;
+	this->triple_hit_chance = character.triple_hit_chance;
+	this->is_ability_used = character.is_ability_used;
+}
+
+CharacterList::CharacterList() {
+	this->_size = 3;
+	_character = new Character * [_size];
+	for (int i = 0; i < _size; ++i) {
+		_character[i] = new Character();
+	}
+}
+
+CharacterList::CharacterList(ListPtr* characters, size_t _size) {
+	this->_size = _size;
+	_character = new Character * [_size];
+	for (int i = 0; i < _size; ++i) {
+		this->_character[i] = new Character();
+		this->_character[i]->set_damage(characters[i]->get_damage());
+		this->_character[i]->set_armor(characters[i]->get_armor());
+		this->_character[i]->set_hp(characters[i]->get_hp());
+		this->_character[i]->set_triple_hit_chance(characters[i]->get_triple_hit_chance());
+		this->_character[i]->set_is_ability_used(characters[i]->get_is_ability_used());
+	}
+}
+
+int Character::get_type() const {
+	return type;
+}
+
+float Character::get_damage() const {
+	return damage;
+}
+
+float Character::get_hp() const {
+	return health;
+}
+
+float Character::get_armor() const {
+	return armor;
+}
+
+float Character::get_triple_hit_chance() const {
+	return triple_hit_chance;
+}
+
+bool Character::get_is_ability_used() const {
+	return is_ability_used;
+}
+
+int CharacterList::get_size() {
+	return _size;
+}
+
+ListPtr CharacterList::get_character_by_index(int index) {
+	return _character[index];
+}
+
+void Character::set_type(CharacterType type) {
+	this->type = type;
+}
+
+void Character::set_damage(float damage) {
+	this->damage = damage;
+}
+
+void Character::set_hp(float hp) {
+	this->health = hp;
+}
+
+void Character::set_armor(float armor) {
+	this->armor = armor;
+}
+
+void Character::set_triple_hit_chance(float triple_hit_chance) {
+	this->triple_hit_chance = triple_hit_chance;
+}
+
+void Character::set_is_ability_used(bool is_ability_used) {
+	this->is_ability_used = is_ability_used;
+}
+
+void CharacterList::set_size(size_t size) {
+	_size = size;
+}
+
+ListPtr CharacterList::operator[](int index) const {
+	if (index < 0 || _size <= index) {
+		throw out_of_range("[CharacterList::operator[]] Index is out of range.");
+	}
+	return _character[index];
+}
+
+ListPtr& CharacterList::operator[](int index) {
+	if (index < 0 || _size <= index) {
+		throw out_of_range("[CharacterList::operator[]] Index is out of range.");
+	}
+	return _character[index];
+}
+
+istream& operator>>(std::istream& in, CharacterType& item_type) {
+	int type;
+	in >> type;
+	switch (type) {
+	case 0:
+		item_type = KNIGHT;
+		break;
+	case 1:
+		item_type = ASSASSIN;
+		break;
+	case 2:
+		item_type = BERSERK;
+		break;
+	default:
+		throw std::runtime_error("Wrong type exception");
+	}
+	return in;
+}
+
+istream& operator>>(istream& in, Character& item) {
+	cout << "Pick character:\n 0 - KNIGHT\n 1 - ASSASSIN\n 2 - BERSERK\n";
+	in >> item.type;
+	cout << "Enter health:\n";
+	in >> item.health;
+	cout << "Enter armor:\n";
+	in >> item.armor;
+	cout << "Enter damage:\n";
+	in >> item.damage;
+	return in;
+}
+
+ostream& operator<<(ostream& out, const Character& item) {
+	return out << "Player(" << "Health: " << item.health << "," << "Armor: " << item.armor << "," << "Damage: " << item.damage << ")";
+}
+bool operator==(const Character& item, const Character& other) {
+	return (item.get_type() == other.get_type() && item.get_hp() == other.get_hp() && item.get_armor() == other.get_armor() && item.get_damage() == other.get_damage());
+}
+bool operator!=(const Character& item, const Character& other) {
+	return !(item == other);
+}
+Character& Character::operator=(Character other) {
+	Swap(other);
+	return *this;
+}
+CharacterList& CharacterList::operator=(CharacterList other) {
+	Swap(other);
+	return *this;
+}
+bool operator==(const CharacterList& tab, const CharacterList& other) {
+	return (tab._size == other._size && **(tab._character) == **(other._character));
+}
+bool operator!=(const CharacterList& tab, const CharacterList& other) {
+	return !(tab == other);
+}
+
+CharacterList::~CharacterList() {
+	for (int i = 0; i < _size; ++i) {
+		delete _character[i];
+	}
+	delete[] _character;
 }
 
 float Character::deal_damage()
@@ -55,14 +222,13 @@ float Character::deal_damage()
 		break;
 	}
 }
-
 void Character::take_damage(float taking_damage)
 {
 	srand(time(0));
 
 	switch (type)
 	{
-	case CharacterType::KNIGHT:
+	case KNIGHT:
 		if ((rand() % 100 + 1) <= reduce_damage_chance)
 		{
 			taking_damage -= (taking_damage * (armor / 100));
@@ -75,7 +241,7 @@ void Character::take_damage(float taking_damage)
 			health -= taking_damage;
 			break;
 		}
-	case CharacterType::ASSASSIN:
+	case ASSASSIN:
 		if (is_ability_used == true) {
 			is_ability_used = false;
 			break;
@@ -85,7 +251,7 @@ void Character::take_damage(float taking_damage)
 			health -= taking_damage;
 			break;
 		}
-	case CharacterType::BERSERK:
+	case BERSERK:
 		taking_damage -= (taking_damage * (armor / 100));
 		health -= taking_damage;
 		break;
@@ -93,19 +259,18 @@ void Character::take_damage(float taking_damage)
 		break;
 	}
 }
-
 void Character::use_ability()
 {
 	switch (type)
 	{
-	case CharacterType::KNIGHT:
+	case KNIGHT:
 		set_armor(armor * 2);
 		set_damage(damage / 2);
 		break;
-	case CharacterType::ASSASSIN:
+	case ASSASSIN:
 		set_is_ability_used(true);
 		break;
-	case CharacterType::BERSERK:
+	case BERSERK:
 		set_damage(damage * 2);
 		set_triple_hit_chance(triple_hit_chance * 2);
 		set_armor(armor / 2);
@@ -114,85 +279,13 @@ void Character::use_ability()
 		break;
 	}
 }
-
-int Character::get_type() {
-	return type;
-}
-
-float Character::get_damage() {
-	return damage;
-}
-
-float Character::get_hp() {
-	return health;
-}
-
-float Character::get_armor() {
-	return armor;
-}
-
-float Character::get_triple_hit_chance() {
-	return triple_hit_chance;
-}
-
-bool Character::get_is_ability_used() {
-	return is_ability_used;
-}
-
-void Character::set_type(CharacterType type) {
-	this->type = type;
-}
-
-void Character::set_damage(float damage) {
-	this->damage = damage;
-}
-
-void Character::set_hp(float hp) {
-	this->health = hp;
-}
-
-void Character::set_armor(float armor) {
-	this->armor = armor;
-}
-
-void Character::set_triple_hit_chance(float triple_hit_chance) {
-	this->triple_hit_chance = triple_hit_chance;
-}
-
-void Character::set_is_ability_used(bool is_ability_used) {
-	this->is_ability_used = is_ability_used;
-}
-
-CharacterList::CharacterList() {
-	this->_size = 3;
-	for (int i = 0; i < _size; ++i) {
-		_characters[i] = Character();
-	}
-}
-
-CharacterList::CharacterList(Character characters[], int _size) {
-	this->_size = _size;
-	for (int i = 0; i < _size; ++i) {
-		this->_characters[i].set_damage(characters[i].get_damage());
-		this->_characters[i].set_armor(characters[i].get_armor());
-		this->_characters[i].set_hp(characters[i].get_hp());
-		this->_characters[i].set_triple_hit_chance(characters[i].get_triple_hit_chance());
-		this->_characters[i].set_is_ability_used(characters[i].get_is_ability_used());
-	}
-}
-
-Character CharacterList::operator[](const int index) const {
-	if (index < 0 || _size <= index) {
-		throw out_of_range("[CharacterList::operator[]] Index is out of range.");
-	}
-	return _characters[index];
-}
-
-int CharacterList::get_size() {
-	return _size;
-}
-void CharacterList::set_size(int size) {
-	this->_size = size;
+void Character::Swap(Character& other) noexcept {
+	swap(type, other.type);
+	swap(health, other.health);
+	swap(armor, other.armor);
+	swap(damage, other.damage);
+	swap(triple_hit_chance, other.triple_hit_chance);
+	swap(is_ability_used, other.is_ability_used);
 }
 
 int CharacterList::index_of_maxdam()
@@ -202,9 +295,8 @@ int CharacterList::index_of_maxdam()
 
 	for (int i = 0; i < _size; ++i)
 	{
-		float value = _characters[i].get_damage();
-		if (max_index == -1 ||
-			max_damage < value)
+		float value = _character[i]->get_damage();
+		if (max_index == -1 || max_damage < value)
 		{
 			max_index = i;
 			max_damage = value;
@@ -216,29 +308,53 @@ int CharacterList::index_of_maxdam()
 
 void CharacterList::add_character(int index, Character character)
 {
-	if (_size == CAP)
-	{
-		throw runtime_error("Full capacity reached.");
-	}
-
 	if (index < 0 || index >= _size)
 	{
 		throw runtime_error("Index out of range.");
 	}
 
-	for (int i = _size - 1; i >= index; --i) { _characters[i] = _characters[i - 1]; }
-	_characters[index] = character;
 	++_size;
+	ListPtr* characters = new Character * [_size];
+	for (int i = 0; i < index; ++i) {
+		characters[i] = new Character(*this->_character[i]);
+	}
+	characters[index] = new Character(character);
+	for (int i = _size - 1; i > index; --i) {
+		characters[i] = new Character(*this->_character[i - 1]);
+	}
+
+	swap(this->_character, characters);
+
 }
 
 void CharacterList::delete_character(int index)
 {
-	if (_size == 0)
+	if (_size <= 0)
 	{
 		throw runtime_error("List is empty.");
 	}
-	for (int i = index; i < _size - 1; ++i) { _characters[i] = _characters[i + 1]; }
+	for (int i = index; i < _size - 1; ++i) {
+		_character[i] = _character[i + 1];
+	}
 	--_size;
 }
 
-void CharacterList::clear() { _size = 0; }
+void CharacterList::clear() {
+	_character = nullptr;
+	_size = 0;
+}
+
+void CharacterList::Swap(CharacterList& other) noexcept {
+	swap(_character, other._character);
+	swap(_size, other._size);
+}
+void CharacterList::print_current(int index) {
+	cout << *_character[index];
+}
+void CharacterList::show_all() {
+	for (int i = 0; i < _size; ++i) {
+		cout << i << ":";
+		print_current(i);
+		cout << endl;
+	}
+}
