@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <characters/characters.h>
 
-using namespace warriors;
 
 TEST(CharacterTests, DealDamage) {
 	// Arrange
@@ -83,10 +82,10 @@ TEST(CharacterListTests, AddCharacter) {
 	tab.add_character(1, p1);
 
 	EXPECT_EQ(tab.get_size(), 4);
-	EXPECT_EQ(tab[1].get_hp(), 100);
-	EXPECT_EQ(tab[1].get_damage(), 50);
-	EXPECT_EQ(tab[0].get_type(), 0);
-	EXPECT_EQ(tab[1].get_armor(), 30);
+	EXPECT_EQ(tab[1]->get_hp(), 100);
+	EXPECT_EQ(tab[1]->get_damage(), 50);
+	EXPECT_EQ(tab[0]->get_type(), 0);
+	EXPECT_EQ(tab[1]->get_armor(), 30);
 
 }
 
@@ -95,8 +94,8 @@ TEST(CharacterListTests, DeleteCharacter) {
 	tab.delete_character(0);
 
 	EXPECT_EQ(tab.get_size(), 2);
-	EXPECT_EQ(tab[0].get_type(), 0);
-	EXPECT_EQ(tab[1].get_hp(), 100);
+	EXPECT_EQ(tab[0]->get_type(), 0);
+	EXPECT_EQ(tab[1]->get_hp(), 100);
 }
 
 TEST(CharacterListTests, ClearList) {
@@ -106,7 +105,7 @@ TEST(CharacterListTests, ClearList) {
 	EXPECT_EQ(tab.get_size(), 0);
 }
 
-TEST(CharacterListTests, IndexOfStrongest) {
+TEST(CharacterListTests, IndexOfMaxDam) {
 	CharacterList tab = CharacterList();
 	Character p1(CharacterType::ASSASSIN, 100, 30, 90);
 	tab.add_character(1, p1);
