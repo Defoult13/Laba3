@@ -56,6 +56,8 @@ CharacterList::CharacterList(ListPtr* characters, size_t _size) {
 	}
 }
 
+//GETTERS
+
 int Character::get_type() const {
 	return type;
 }
@@ -88,6 +90,8 @@ ListPtr CharacterList::get_character_by_index(int index) {
 	return _character[index];
 }
 
+//SETTERS
+
 void Character::set_type(CharacterType type) {
 	this->type = type;
 }
@@ -115,6 +119,8 @@ void Character::set_is_ability_used(bool is_ability_used) {
 void CharacterList::set_size(size_t size) {
 	_size = size;
 }
+
+//OPERATORS
 
 ListPtr CharacterList::operator[](int index) const {
 	if (index < 0 || _size <= index) {
@@ -162,7 +168,7 @@ istream& operator>>(istream& in, Character& item) {
 }
 
 ostream& operator<<(ostream& out, const Character& item) {
-	return out << "Player(" << "Health: " << item.health << "," << "Armor: " << item.armor << "," << "Damage: " << item.damage << ")";
+	return out << "Warrior(" << "Health: " << item.health << "," << "Armor: " << item.armor << "," << "Damage: " << item.damage << ")";
 }
 bool operator==(const Character& item, const Character& other) {
 	return (item.get_type() == other.get_type() && item.get_hp() == other.get_hp() && item.get_armor() == other.get_armor() && item.get_damage() == other.get_damage());
@@ -191,6 +197,8 @@ CharacterList::~CharacterList() {
 	}
 	delete[] _character;
 }
+
+//METHODS
 
 float Character::deal_damage()
 {
@@ -378,15 +386,15 @@ void CharacterList::Fight(Character& attacker, Character& defender) {
 
 				attacker.use_ability();
 				if (attacker.get_type() == KNIGHT) {
-					cout << "Увеличена броня ценой урона" << endl;
+					cout << "Персонажу 2 увеличена броня ценой урона" << endl;
 					system("pause");
 				}
 				else if (attacker.get_type() == BERSERK) {
-					cout << "Увеличен урон и шанс крита,ценой брони" << endl;
+					cout << "Персонажу 2 увеличен урон и шанс крита,ценой брони" << endl;
 					system("pause");
 				}
 				else {
-					cout << "Уворот от следующей атаки" << endl;
+					cout << "Персонаж 2 готовится увернуться от следующей атаки" << endl;
 					system("pause");
 				}
 			}
@@ -407,15 +415,15 @@ void CharacterList::Fight(Character& attacker, Character& defender) {
 
 				defender.use_ability();
 				if (defender.get_type() == KNIGHT) {
-					cout << "Увеличена броня ценой урона" << endl;
+					cout << "Персонажу 2 увеличена броня ценой урона" << endl;
 					system("pause");
 				}
 				else if (defender.get_type() == BERSERK) {
-					cout << "Увеличен урон и шанс крита,ценой брони" << endl;
+					cout << "Персонажу 2 увеличен урон и шанс крита,ценой брони" << endl;
 					system("pause");
 				}
 				else {
-					cout << "Уворот от следующей атаки" << endl;
+					cout << "Персонаж 2 готовится увернуться от следующей атаки" << endl;
 					system("pause");
 				}
 			}
@@ -423,5 +431,4 @@ void CharacterList::Fight(Character& attacker, Character& defender) {
 	}
 	if (defender.get_hp() <= 0) cout << "Персонаж 1 победил" << endl;
 	else if (attacker.get_hp() <= 0) cout << "Персонаж 2 победил" << endl;
-	system("pause");
 }
