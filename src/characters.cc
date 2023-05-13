@@ -196,6 +196,7 @@ CharacterList::~CharacterList() {
 		delete _character[i];
 	}
 	delete[] _character;
+	_character = nullptr;
 }
 
 //METHODS
