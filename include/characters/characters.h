@@ -1,66 +1,108 @@
 #pragma once
 #include <iostream>
-#define ListPtr Character*
+#define ItemPtr shared_ptr<Character>
 using namespace std;
 
 
 
-	enum CharacterType
-	{
-		KNIGHT,
-		ASSASSIN,
-		BERSERK
-	};
+	
 
 	class Character
 	{
-	private:
-		CharacterType type;
-		float health;
-		float armor;
-		float damage;
-		float triple_hit_chance = 30;
-		bool is_ability_used = false;
 	public:
-		float deal_damage();
-		void take_damage(float incoming_damage);
-		void use_ability();
+		virtual float deal_damage() const = 0;
+		virtual void take_damage(float incoming_damage) = 0;
+		virtual void use_ability() = 0;
+
+		virtual unique_ptr<Character> clone() const = 0;
+		virtual bool equals(shared_ptr<Character> other) const = 0;
+		virtual void print(ostream& stream) const = 0;
+
+		virtual ~Character() = default;
 
 		int get_type() const;
 		float get_damage() const;
 		float get_hp() const;
 		float get_armor() const;
-		float get_triple_hit_chance() const;
-		bool get_is_ability_used() const;
-
-		void set_type(CharacterType type);
+		
 		void set_damage(float damage);
 		void set_hp(float hp);
 		void set_armor(float armor);
-		void set_triple_hit_chance(float triple_hit_chance);
-		void set_is_ability_used(bool is_ability_used);
 
-		Character();
-		Character(CharacterType type, float health, float armor, float damage);
-		Character(const	Character& character);
-		friend istream& operator>>(istream& in, Character& item);
-		friend ostream& operator<<(ostream& out, const Character& item);
-		void Swap(Character& other) noexcept;
-		Character& operator=(Character other);
+	protected:
+		float health;
+		float armor;
+		float damage;
+		Character() = default;
+		Character(const Character& character) = default;
+		Character& operator=(const Character& other) = default;
+	};
+
+	class Knight : public Character {
+		float reduce_damage_chance = 40;
+	public:
+
+		Knight();
+		Knight(float health, float armor, float damage);
+		~Knight() = default;
+
+		unique_ptr<Character> clone() const override;
+		bool equals(shared_ptr<Character> other) const override;
+		void print(ostream& out) const override;
+		friend istream& operator>>(istream& in, shared_ptr<Knight>& item);
+		float deal_damage() const override;
+		void take_damage(float incoming_damage) override;
+		void use_ability() override;
+	};
+
+	class Assassin : public Character {
+		float double_hit_chance = 50;
+		bool is_ability_used = false;
+	public:
+		Assassin();
+		Assassin(float health, float armor, float damage);
+		~Assassin() = default;
+
+		unique_ptr<Character> clone() const override;
+		bool equals(shared_ptr<Character> other) const override;
+		void print(ostream& out) const override;
+		friend istream& operator>>(istream& in, shared_ptr<Assassin>& item);
+		float deal_damage() const override;
+		void take_damage(float incoming_damage) override;
+		void use_ability() override;
+	};
+
+	class Berserk : public Character {
+		float triple_hit_chance = 30;
+	public:
+		Berserk();
+		Berserk(float health, float armor, float damage);
+		~Berserk() = default;
+
+		unique_ptr<Character> clone() const override;
+		bool equals(shared_ptr<Character> other) const override;
+		void print(ostream& out) const override;
+		friend istream& operator>>(istream& in, shared_ptr<Berserk>& item);
+		float deal_damage() const override;
+		void take_damage(float incoming_damage) override;
+		void use_ability() override;
 	};
 
 	class CharacterList
 	{
-		ListPtr* _character;
-		size_t _size;
+		vector<ItemPtr> _character;
+
 	public:
 
 		CharacterList();
-		CharacterList(ListPtr* characters, size_t _size);
-		~CharacterList();
+		CharacterList(vector<ItemPtr> characters);
+		CharacterList(vector<ItemPtr> characters, int);
+		CharacterList(const CharacterList& other);
 
-		ListPtr get_character_by_index(int i);
-		void add_character(int index, Character character);
+		ItemPtr get_character_by_index(int i);
+		int size();
+
+		void add_character(int index, ItemPtr character);
 		void delete_character(int index);
 		void clear();
 		void print_current(int index);
@@ -72,8 +114,8 @@ using namespace std;
 		int get_size();
 		void set_size(size_t size);
 
-		ListPtr operator[](int index) const;
-		ListPtr& operator[](int index);
+		ItemPtr operator[](int index) const;
+		ItemPtr& operator[](int index);
 		CharacterList& operator=(CharacterList other);
 		friend bool operator==(const CharacterList& tab, const CharacterList& other);
 		friend bool operator!=(const CharacterList& tab, const CharacterList& other);
