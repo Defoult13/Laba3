@@ -19,7 +19,7 @@ Knight::Knight(float health, float armor, float damage)
 Knight::Knight() {
 	health = 100;
 	armor = 40;
-	damage = 50;
+	damage = 30;
 }
 
 Assassin::Assassin(float health, float armor, float damage)
@@ -60,7 +60,7 @@ CharacterList::CharacterList(vector<ItemPtr> characters) {
 		this->_character[i] = make_shared<Knight>();
 	}
 }
-
+/*
 CharacterList::CharacterList(vector<ItemPtr> characters) {
 	_character = vector<ItemPtr>(characters.size());
 	for (int i = 0; i < _character.size(); ++i) {
@@ -74,7 +74,7 @@ CharacterList::CharacterList(vector<ItemPtr> characters) {
 		this->_character[i] = make_shared<Berserk>();
 	}
 }
-
+*/
 CharacterList::CharacterList(const CharacterList& other) {
 	this->_character = other._character;
 }
@@ -277,7 +277,7 @@ int CharacterList::index_of_maxdam()
 {
 	int index = 0;
 	float max_dam = _character[0]->get_damage();
-	for (int i = 1; i < _character.size() - 1; ++i)
+	for (int i = 0; i < _character.size(); ++i)
 	{
 		float value = _character[i]->get_damage();
 		if (value > max_dam)

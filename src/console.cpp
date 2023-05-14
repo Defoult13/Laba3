@@ -21,11 +21,14 @@ int main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	CharacterList CL = CharacterList();
-	Character item = Character();
+	shared_ptr<Knight> knight = make_shared<Knight>();
+	shared_ptr<Assassin> assassin = make_shared<Assassin>();
+	shared_ptr<Berserk> berserk = make_shared<Berserk>();
 	int input = 0;
 	int idx;
 	int c1;
 	int c2;
+	int type;
 	while (input != 6) {
 		menu();
 		cin >> input;
@@ -35,8 +38,22 @@ int main() {
 			CL.show_all();
 			cout << "Введите индекс персонажа: ";
 			cin >> idx;
-			cin >> item;
-			CL.add_character(idx, item);
+			cout << "Введите тип: (0-Knight,1-Assassin,2-Berserk) ";
+			cin >> type;
+			switch (type) {
+			case 0:
+				cin >> knight;
+				CL.add_character(idx, knight);
+				break;
+			case 1:
+				cin >> assassin;
+				CL.add_character(idx, assassin);
+				break;
+			case 2:
+				cin >> berserk;
+				CL.add_character(idx, berserk);
+				break;
+			}
 			break;
 		case 2:
 			system("cls");
@@ -63,9 +80,7 @@ int main() {
 			cin >> c1;
 			cout << "Введите индекс второго персонажа" << endl;
 			cin >> c2;
-			Character* ch1 = CL[c1];
-			Character* ch2 = CL[c2];
-			CL.Fight(*ch1, *ch2);
+			//CL.Fight(CL[c1], *ch2);
 		}
 		
 		if (input != 6)

@@ -1,5 +1,7 @@
 #pragma once
+#include <memory>
 #include <iostream>
+#include <vector>
 #define ItemPtr shared_ptr<Character>
 using namespace std;
 
@@ -20,10 +22,11 @@ using namespace std;
 
 		virtual ~Character() = default;
 
-		int get_type() const;
+		
 		float get_damage() const;
 		float get_hp() const;
 		float get_armor() const;
+		bool get_is_ability_used() const;
 		
 		void set_damage(float damage);
 		void set_hp(float hp);
@@ -36,6 +39,7 @@ using namespace std;
 		Character() = default;
 		Character(const Character& character) = default;
 		Character& operator=(const Character& other) = default;
+		bool is_ability_used = false;
 	};
 
 	class Knight : public Character {
@@ -57,11 +61,9 @@ using namespace std;
 
 	class Assassin : public Character {
 		float double_hit_chance = 50;
-		bool is_ability_used = false;
 	public:
 
 		void set_is_ability_used(bool is_ability_used);
-		bool get_is_ability_used() const;
 		Assassin();
 		Assassin(float health, float armor, float damage);
 		~Assassin() = default;
