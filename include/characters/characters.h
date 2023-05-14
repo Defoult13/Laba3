@@ -59,6 +59,9 @@ using namespace std;
 		float double_hit_chance = 50;
 		bool is_ability_used = false;
 	public:
+
+		void set_is_ability_used(bool is_ability_used);
+		bool get_is_ability_used() const;
 		Assassin();
 		Assassin(float health, float armor, float damage);
 		~Assassin() = default;
@@ -75,6 +78,8 @@ using namespace std;
 	class Berserk : public Character {
 		float triple_hit_chance = 30;
 	public:
+		void set_triple_hit_chance(float triple_hit_chance);
+		float get_triple_hit_chance() const;
 		Berserk();
 		Berserk(float health, float armor, float damage);
 		~Berserk() = default;
@@ -110,9 +115,6 @@ using namespace std;
 		void Swap(CharacterList& other) noexcept;
 		int index_of_maxdam();
 		void Fight(Character& attacker, Character& defender);
-
-		int get_size();
-		void set_size(size_t size);
 
 		ItemPtr operator[](int index) const;
 		ItemPtr& operator[](int index);
