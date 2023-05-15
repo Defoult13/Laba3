@@ -80,7 +80,8 @@ int main() {
 			cin >> c1;
 			cout << "Введите индекс второго персонажа" << endl;
 			cin >> c2;
-			//CL.Fight(CL[c1], *ch2);
+			CL.Fight(CL[c1], CL[c2]);
+			
 		}
 		
 		if (input != 6)

@@ -352,27 +352,27 @@ void CharacterList::show_all() {
 	}
 }
 
-void CharacterList::Fight(Character& attacker, Character& defender) {
+void CharacterList::Fight(ItemPtr& attacker, ItemPtr& defender) {
 	Knight knig = Knight();
 	Assassin assas = Assassin();
 	Berserk bers = Berserk();
-	while (attacker.get_hp() > 0 && defender.get_hp() > 0){
+	while (attacker->get_hp() > 0 && defender->get_hp() > 0){
 		int action = rand() % 2;
 		int turn = rand() % 2;
 		if (turn == 0) {
 			if (action == 0) {
-				if (defender.get_is_ability_used()) {
+				if (defender->get_is_ability_used()) {
 					cout << "Персонаж 2 увернулся от атаки" << endl;
 					system("pause");
 				}
-				defender.take_damage(attacker.deal_damage());
+				defender->take_damage(attacker->deal_damage());
 				cout << "Персонаж 2 получил урон!" << endl;
-				cout << "Здоровье персонажа 2: " << defender.get_hp() << endl;
+				cout << "Здоровье персонажа 2: " << defender->get_hp() << endl;
 				system("pause");
 			}
 			else {
 
-				attacker.use_ability();
+				attacker->use_ability();
 				if (typeid(attacker) == typeid(knig)) {
 					cout << "Персонажу 2 увеличена броня ценой урона" << endl;
 					system("pause");
@@ -390,18 +390,18 @@ void CharacterList::Fight(Character& attacker, Character& defender) {
 		else if (turn == 1) {
 			 
 			if (action == 0) {
-				if (attacker.get_is_ability_used()) {
+				if (attacker->get_is_ability_used()) {
 					cout << "Персонаж 1 увернулся от атаки" << endl;
 					system("pause");
 				}
-				attacker.take_damage(defender.deal_damage());
+				attacker->take_damage(defender->deal_damage());
 				cout << "Персонаж 1 получил урон!" << endl;
-				cout << "Здоровье персонажа 1: " << attacker.get_hp() << endl;
+				cout << "Здоровье персонажа 1: " << attacker->get_hp() << endl;
 				system("pause");
 			}
 			else {
 
-				defender.use_ability();
+				defender->use_ability();
 				if (typeid(defender) == typeid(knig)) {
 					cout << "Персонажу 2 увеличена броня ценой урона" << endl;
 					system("pause");
@@ -417,6 +417,6 @@ void CharacterList::Fight(Character& attacker, Character& defender) {
 			}
 		}
 	}
-	if (defender.get_hp() <= 0) cout << "Персонаж 1 победил" << endl;
-	else if (attacker.get_hp() <= 0) cout << "Персонаж 2 победил" << endl;
+	if (defender->get_hp() <= 0) cout << "Персонаж 1 победил" << endl;
+	else if (attacker->get_hp() <= 0) cout << "Персонаж 2 победил" << endl;
 }

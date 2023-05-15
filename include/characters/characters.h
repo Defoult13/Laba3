@@ -116,7 +116,7 @@ using namespace std;
 		void show_all();
 		void Swap(CharacterList& other) noexcept;
 		int index_of_maxdam();
-		void Fight(Character& attacker, Character& defender);
+		void Fight(ItemPtr& attacker, ItemPtr& defender);
 
 		ItemPtr operator[](int index) const;
 		ItemPtr& operator[](int index);
