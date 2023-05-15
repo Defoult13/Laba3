@@ -60,21 +60,7 @@ CharacterList::CharacterList(vector<ItemPtr> characters) {
 		this->_character[i] = make_shared<Knight>();
 	}
 }
-/*
-CharacterList::CharacterList(vector<ItemPtr> characters) {
-	_character = vector<ItemPtr>(characters.size());
-	for (int i = 0; i < _character.size(); ++i) {
-		this->_character[i] = make_shared<Assassin>();
-	}
-}
 
-CharacterList::CharacterList(vector<ItemPtr> characters) {
-	_character = vector<ItemPtr>(characters.size());
-	for (int i = 0; i < _character.size(); ++i) {
-		this->_character[i] = make_shared<Berserk>();
-	}
-}
-*/
 CharacterList::CharacterList(const CharacterList& other) {
 	this->_character = other._character;
 }
