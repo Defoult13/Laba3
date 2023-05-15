@@ -373,11 +373,11 @@ void CharacterList::Fight(ItemPtr& attacker, ItemPtr& defender) {
 			else {
 
 				attacker->use_ability();
-				if (typeid(attacker) == typeid(knig)) {
+				if (typeid(*attacker) == typeid(knig)) {
 					cout << "Персонажу 2 увеличена броня ценой урона" << endl;
 					system("pause");
 				}
-				else if (typeid(attacker) == typeid(bers)) {
+				else if (typeid(*attacker) == typeid(bers)) {
 					cout << "Персонажу 2 увеличен урон и шанс крита,ценой брони" << endl;
 					system("pause");
 				}
@@ -402,11 +402,11 @@ void CharacterList::Fight(ItemPtr& attacker, ItemPtr& defender) {
 			else {
 
 				defender->use_ability();
-				if (typeid(defender) == typeid(knig)) {
+				if (typeid(*defender) == typeid(knig)) {
 					cout << "Персонажу 2 увеличена броня ценой урона" << endl;
 					system("pause");
 				}
-				else if (typeid(defender) == typeid(bers)) {
+				else if (typeid(*defender) == typeid(bers)) {
 					cout << "Персонажу 2 увеличен урон и шанс крита,ценой брони" << endl;
 					system("pause");
 				}
