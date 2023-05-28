@@ -103,7 +103,6 @@ using namespace std;
 
 		CharacterList();
 		CharacterList(vector<ItemPtr> characters);
-		CharacterList(vector<ItemPtr> characters, int);
 		CharacterList(const CharacterList& other);
 
 		ItemPtr get_character_by_index(int i);
